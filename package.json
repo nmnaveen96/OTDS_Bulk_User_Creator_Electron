@@ -1,0 +1,35 @@
+{
+  "name": "otds-bulk-user-creator",
+  "version": "1.0.0",
+  "description": "Desktop OTDS bulk user creator that avoids browser CORS by calling OTDS from Electron main process.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:win": "electron-builder --win portable",
+    "build:win-exe": "electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "latest",
+    "electron-builder": "latest"
+  },
+  "build": {
+    "appId": "qa.qf.otds.bulkusercreator",
+    "productName": "OTDS Bulk User Creator",
+    "files": [
+      "main.js",
+      "preload.js",
+      "index.html",
+      "README.md"
+    ],
+    "win": {
+      "target": [
+        "portable",
+        "nsis"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}
