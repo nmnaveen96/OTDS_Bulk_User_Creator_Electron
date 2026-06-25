@@ -2,9 +2,6 @@ name: Build Windows Portable EXE
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 permissions:
   contents: read
@@ -16,26 +13,29 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
-          cache: npm
+          node-version: 24
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Build portable EXE
+      - name: Build portable Windows EXE
         run: npm run build:win
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: List build output
+      - name: List dist folder
         shell: powershell
         run: |
-          Get-ChildItem -Path dist -Recurse
+          if (Test-Path dist) {
+            Get-ChildItem -Path dist -Recurse
+          } else {
+            Write-Error "dist folder was not created"
+          }
 
       - name: Upload portable EXE artifact
         uses: actions/upload-artifact@v4
